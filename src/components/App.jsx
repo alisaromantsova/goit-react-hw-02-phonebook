@@ -3,37 +3,28 @@ import { nanoid } from 'nanoid';
 import { Component } from 'react';
 import { Contacts } from './Contacts/Contacts';
 import { ContactForm } from './ContactForm/ContactForm';
-import { Filter } from './Filter';
+import { Filter } from './Filter/Filter';
 class App extends Component {
   state = {
     contacts: [
-      { id: nanoid(), name: 'Rosie Simpson', number: '459-12-56' },
-      { id: nanoid(), name: 'Hermione Kline', number: '443-89-12' },
-      { id: nanoid(), name: 'Eden Clements', number: '645-17-79' },
-      { id: nanoid(), name: 'Annie Copeland', number: '227-91-26' },
+      { id: nanoid(4), name: 'Rosie Simpson', number: '459-12-56' },
+      { id: nanoid(4), name: 'Hermione Kline', number: '443-89-12' },
+      { id: nanoid(4), name: 'Eden Clements', number: '645-17-79' },
+      { id: nanoid(4), name: 'Annie Copeland', number: '227-91-26' },
     ],
-    name: '',
-    number: '',
+
     filter: '',
   };
-  onSubmit = e => {
-    e.preventDefault();
-    const newContact = {
-      id: nanoid(),
-      name: e.target[0].value,
-      number: e.target[1].value,
-    };
-    const result = this.state.contacts.find(
-      item => item.name === newContact.name
-    );
+  onSubmit = contact => {
+    const result = this.state.contacts.find(item => item.name === contact.name);
     if (result) {
-      alert(`${e.target[0].value} is already in contacts.`);
+      alert(`${contact.name} is already in contacts.`);
 
       return;
     } else {
-      this.setState(prevState => prevState.contacts.push(newContact));
-      e.target[0].value = '';
-      e.target[1].value = '';
+      this.setState(prevState => ({
+        contacts: [...prevState.contacts, { ...contact, id: nanoid(4) }],
+      }));
     }
   };
   onInputChange(e) {
